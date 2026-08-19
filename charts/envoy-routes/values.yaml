@@ -1,0 +1,10 @@
+host: ""
+gateway:
+  name: platform-gateway
+  namespace: envoy-gateway-system
+backend:
+  name: openproject
+  port: 8080
+tls:
+  issuer: letsencrypt-envoy-staging
+  secretName: openproject-ppr-tls

@@ -1,0 +1,25 @@
+creation_rules:
+  - path_regex: (environments/prd/.*)
+    key_groups:
+      - age:
+        - age18hnsrz7twfcecjgzu97gs6pcs5xe3vg3swfwz827833yx2qs6stsjer0aq # Mickael
+        - age1uhrgt2qzj4cj267xs9ff63yqdgqvtrz0szzwwr9c7m6glcst559qxh93kq # Alexandre
+        - age1wmt8s7nq7aut66npp7j9rysl7uszt6n7z8cm7q2fsxmext8pldus4nlh8a # Kevin
+        - age14slkhgu3zqjg3ljp8fre77ru9m83jd678nppdqfpkgpdr9en7etsl3ywr9 # Steven
+        - age1vtajxluy46cfx343e0kwssvrndu8sk2c3p5j8zmwzcg4j0f8rvnsv8l3ef # Erwan
+        - age1z2nhhjvvx708f86cdxmxn6j7waljdt2835vtv7lehy3q4tpttaxsvhyhuk # Oscar
+        - age1qa8rxew3h5txw5hshn099fa3r8h8ds27fr4pfsn45ya3ajnu2upqwfzaa4 # Loic
+        - age1taj6c5y8fep076sxzn0wyqxwwy8xfkgca2pswvsqmk9gx3p7psrqf77xn5 # Florian
+        - age1nef2pmuzen5zrgd5k2ek5tvtch43l22dektr5a274kyq5ts0yggs5e0xk6 # CI Argo prd
+
+  - key_groups:
+      - age:
+        - age18hnsrz7twfcecjgzu97gs6pcs5xe3vg3swfwz827833yx2qs6stsjer0aq # Mickael
+        - age1uhrgt2qzj4cj267xs9ff63yqdgqvtrz0szzwwr9c7m6glcst559qxh93kq # Alexandre
+        - age1wmt8s7nq7aut66npp7j9rysl7uszt6n7z8cm7q2fsxmext8pldus4nlh8a # Kevin
+        - age14slkhgu3zqjg3ljp8fre77ru9m83jd678nppdqfpkgpdr9en7etsl3ywr9 # Steven
+        - age1vtajxluy46cfx343e0kwssvrndu8sk2c3p5j8zmwzcg4j0f8rvnsv8l3ef # Erwan
+        - age1z2nhhjvvx708f86cdxmxn6j7waljdt2835vtv7lehy3q4tpttaxsvhyhuk # Oscar
+        - age1qa8rxew3h5txw5hshn099fa3r8h8ds27fr4pfsn45ya3ajnu2upqwfzaa4 # Loic
+        - age1taj6c5y8fep076sxzn0wyqxwwy8xfkgca2pswvsqmk9gx3p7psrqf77xn5 # Florian
+        - age1xvckqrat9q6lfh24ax6y65qzde6krm4a2s0uc83ursr7gas8eavswf5kpl # CI Argo dev

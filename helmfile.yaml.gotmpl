@@ -1,0 +1,27 @@
+environments:
+  {{ .Environment.Name }}:
+    values: []
+
+---
+repositories:
+- name: openproject
+  url: https://charts.openproject.org
+
+releases:
+  - name: openproject
+    namespace: openproject
+    chart: openproject/openproject
+    version: 13.17.1
+    installed: true
+    createNamespace: false
+    values:
+      - environments/{{ .Environment.Name }}/values.yaml
+    secrets:
+      - environments/{{ .Environment.Name }}/secrets.enc.yaml
+  - name: openproject-routes
+    namespace: openproject
+    chart: ./charts/envoy-routes
+    installed: true
+    createNamespace: false
+    values:
+      - environments/{{ .Environment.Name }}/envoy-values.yaml

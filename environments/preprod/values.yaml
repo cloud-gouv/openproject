@@ -1,0 +1,167 @@
+# see https://github.com/opf/helm-charts/blob/main/charts/openproject/values.yaml
+
+global: {}
+
+# https://hub.docker.com/r/openproject/openproject/tags
+image:
+  repository: openproject/openproject
+  sha256: "817640f6637157903846ac79808fe0333b279ae6cddf3c57fe4bea6ff98b56d1" #tag 17.9.6-slim
+
+dbInit:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "256Mi"
+
+appInit:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
+ingress:
+  enabled: false
+
+networkPolicy:
+  enabled: false
+
+memcached:
+  bundled: true
+  image:
+    repository: bitnamilegacy/memcached
+    tag: 1.6.24-debian-12-r0
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "2"
+  networkPolicy:
+    enabled: false
+  metrics:
+    enabled: true
+    image:
+      repository: bitnamilegacy/memcached-exporter
+      tag: 0.14.2-debian-12-r10
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "2"
+    serviceMonitor:
+      enabled: true
+
+hocuspocus:
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "2"
+
+openproject:
+  https: true
+  hsts: true
+  hosts: openproject.opicloud-dev-osc-euw2-wapp-02.k8s.cloud.incubateur.net
+  seed_locale: "fr"
+
+  admin_user:
+    # password is encrypted in environments/preprod/secrets.enc.yaml
+    password_reset: "true"
+    name: "admin"
+    mail: "admin@example.net"
+
+  useTmpVolumes: false
+
+persistence:
+  enabled: false
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "bsu-gp2"
+  size: 5Gi
+
+s3:
+  # S3 is required for attachment storage when storageClass does not
+  # support ReadWriteMany
+  enabled: true
+
+  region: eu-west-par
+  bucketName: openproject-poc
+
+  endpoint: https://s3.eu-west-par.io.cloud.ovh.net/
+  host: s3.eu-west-par.io.cloud.ovh.net
+  port: 443
+  pathStyle: true
+  signatureVersion: 4
+  enableSignatureV4Streaming: false
+
+  directUploads: false
+
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - "ALL"
+  seccompProfile:
+    type: "RuntimeDefault"
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+
+postgresql:
+  bundled: false
+  connection:
+    host: cnpg-cluster-openproject-rw
+    port: 5432
+  auth:
+    existingSecret: "cnpg-cluster-openproject-app"
+    username: "openproject"
+    database: "openproject"
+    secretKeys:
+      userPasswordKey: "password"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+metrics:
+  enabled: true
+  path: "/metrics"
+  port: 9394
+  serviceMonitor:
+    enabled: true
+
+seederJob:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "4"
+    memory: 4Gi

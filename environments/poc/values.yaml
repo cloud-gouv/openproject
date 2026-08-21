@@ -1,32 +1,80 @@
 # see https://github.com/opf/helm-charts/blob/main/charts/openproject/values.yaml
 
-global:
-  imagePullSecrets:
-    - regcred-opicloud
+global: {}
+  # imagePullSecrets:
+  #   - regcred-opicloud
 
 dbInit:
-  image:
-    imagePullPolicy: "IfNotPresent"
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "256Mi"
+
+appInit:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
 
 ingress:
   enabled: true
   ingressClassName: nginx
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/whitelist-source-range: "92.171.69.105,100.65.103.101/32,100.67.22.185/32,100.67.72.140/32,100.67.23.180/32,100.67.65.200/32,142.44.63.86/32,185.24.186.4/32"
   host: "openproject-poc.dev.opicloud.fr"
   tls:
     enabled: true
     secretName: "openproject-poc-dev-opicloud-fr-tls"
 
-image:
-  registry: "docker.io"
-  repository: "openproject/openproject"
-  imagePullPolicy: "IfNotPresent"
-  tag: "17.7.2-slim"
+networkPolicy:
+  enabled: false
+
+# imagePullSecrets: []
+
+memcached:
+  bundled: true
+  image:
+    repository: bitnamilegacy/memcached
+    tag: 1.6.24-debian-12-r0
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "2"
+  networkPolicy:
+    enabled: false
+  metrics:
+    enabled: true
+    image: 
+      repository: bitnamilegacy/memcached-exporter
+      tag: 0.14.2-debian-12-r10
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "2"
+    serviceMonitor:
+      enabled: true
 
 hocuspocus:
-  image:
-    imagePullPolicy: "IfNotPresent"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "2"
  
 openproject:
   https: true
@@ -35,16 +83,19 @@ openproject:
   admin_user:
     password: "admin"
     password_reset: "true"
-    name: "OpenProject Admin"
+    name: "admin"
     mail: "admin@example.net"
 
-  useTmpVolumes: false
+  useTmpVolumes: true
+  tmpVolumeStorage: "10Gi"
+  tmpVolumeStorageClassName: "bsu-gp2"
 
 persistence:
-  enabled: false
-
-postgresql:
-  bundled: true
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "bsu-gp2"
+  size: 5Gi
 
 s3:
   # S3 is required for attachment storage when storageClass does not
@@ -63,6 +114,34 @@ s3:
 
   directUploads: false
 
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - "ALL"
+  seccompProfile:
+    type: "RuntimeDefault"
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+
+postgresql:
+  bundled: true
+  primary:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+
 autoscaling:
   enabled: true
   minReplicas: 1
@@ -71,31 +150,24 @@ autoscaling:
 
 metrics:
   enabled: true
-
-  ## Metrics endpoint path
-  #
   path: "/metrics"
-
-  ## Metrics port (added to service)
-  #
   port: 9394
-
-  ## ServiceMonitor configuration for Prometheus Operator
-  #
   serviceMonitor:
     enabled: true
 
-## Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).
-## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
-##
-resourcesPreset: ~
-## Configure resource requests and limits.
-##
-## http://kubernetes.io/docs/user-guide/compute-resources/
-#
+seederJob:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
 resources:
   requests:
-    memory: "512Mi"
-    cpu: "250m"
+    cpu: 100m
+    memory: 256Mi
   limits:
-    memory: "4Gi"
+    cpu: "4"
+    memory: 4Gi

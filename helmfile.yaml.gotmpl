@@ -1,0 +1,20 @@
+environments:
+  {{ .Environment.Name }}:
+    values: []
+
+---
+repositories:
+- name: openproject
+  url: https://charts.openproject.org
+
+releases:
+  - name: opr-poc
+    namespace: opr-poc
+    chart: openproject/openproject
+    version: 13.10.2
+    installed: true
+    createNamespace: false
+    values:
+      - environments/{{ .Environment.Name }}/values.yaml
+    secrets:
+      - environments/{{ .Environment.Name }}/secrets.enc.yaml

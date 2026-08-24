@@ -81,17 +81,17 @@ openproject:
   hsts: true
 
   admin_user:
-    password: "admin"
+    # password is encrypted in environments/poc/secrets.enc.yaml
     password_reset: "true"
     name: "admin"
     mail: "admin@example.net"
 
   useTmpVolumes: true
-  tmpVolumeStorage: "10Gi"
-  tmpVolumeStorageClassName: "bsu-gp2"
+  tmpVolumesStorage: "10Gi"
+  tmpVolumesStorageClassName: "bsu-gp2"
 
 persistence:
-  enabled: true
+  enabled: false
   accessModes:
     - ReadWriteOnce
   storageClassName: "bsu-gp2"

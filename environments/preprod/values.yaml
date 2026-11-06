@@ -72,7 +72,7 @@ hocuspocus:
 openproject:
   https: true
   hsts: true
-  hosts: openproject.opicloud-dev-osc-euw2-wapp-02.k8s.cloud.incubateur.net
+  hosts: 
   seed_locale: "fr"
 
   admin_user:
@@ -96,7 +96,7 @@ s3:
   enabled: true
 
   region: eu-west-par
-  bucketName: openproject-poc
+  bucketName: openproject-ppr
 
   endpoint: https://s3.eu-west-par.io.cloud.ovh.net/
   host: s3.eu-west-par.io.cloud.ovh.net

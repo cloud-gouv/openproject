@@ -1,4 +1,4 @@
-host: "openproject.opicloud-dev-osc-euw2-wapp-02.k8s.cloud.incubateur.net"
+host: "openproject.dinum-general-ppr-euw2-wapp-01.k8s.dev.opicloud.fr""
 gateway:
   name: platform-gateway
   namespace: envoy-gateway-system

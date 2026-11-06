@@ -81,7 +81,7 @@ hocuspocus:
 openproject:
   https: true
   hsts: true
-  hosts: 
+  hosts: "openproject.dinum-general-ppr-euw2-wapp-01.k8s.dev.opicloud.fr"
   seed_locale: "fr"
 
   admin_user:

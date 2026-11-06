@@ -18,10 +18,10 @@ releases:
       - environments/{{ .Environment.Name }}/values.yaml
     secrets:
       - environments/{{ .Environment.Name }}/secrets.enc.yaml
-  - name: openproject-routes
-    namespace: openproject
-    chart: ./charts/envoy-routes
-    installed: true
-    createNamespace: false
-    values:
-      - environments/{{ .Environment.Name }}/envoy-values.yaml
+  # - name: openproject-routes
+  #   namespace: openproject
+  #   chart: ./charts/envoy-routes
+  #   installed: true
+  #   createNamespace: false
+  #   values:
+  #     - environments/{{ .Environment.Name }}/envoy-values.yaml
